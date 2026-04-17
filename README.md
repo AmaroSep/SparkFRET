@@ -76,18 +76,22 @@ The hub opens in your browser at `http://localhost:8501`.
 ### Hub workflow
 
 ```
-Col 1: Detection              Col 2: FRET Analysis          Col 3: Pattern Analysis
-──────────────────────        ─────────────────────────     ───────────────────────
-Select FRET image folder  →   Load sparkle + cell masks →   Group statistics
-Select sparkle model          Quantify FRET per sparkle     Outlier removal
-Run Cellpose (sparkles)       Compute sparkles/cell ratio   Publication figures
-Detect cells (cyto3, CFP)     Export Excel + CSV            Export SVG
-View sparkles/cell ratio
+Col 1: Detection              Col 2: FRET Analysis          Col 3: Characterization
+──────────────────────        ─────────────────────────     ────────────────────────
+Select FRET image folder  →   Load sparkle + cell masks →   Load Sparks.csv
+Select sparkle model          Quantify FRET per sparkle     Load Plate info (.xlsx)
+Run Cellpose (sparkles)       Compute sparkles/cell ratio   PCA / UMAP
+Detect cells (cyto3, CFP)     Export Excel + CSV            Correlation matrix
+View sparkles/cell ratio                                    Random Forest classifier
+                                                            Patient heatmap
+                                                            Statistical tests
 ```
 
 **Col 1** handles all segmentation: sparkles are detected with the custom model and cells are detected independently with Cellpose `cyto3` on the CFP channel. Both mask sets are saved and passed automatically to Col 2.
 
-**Col 2** performs mask-based FRET analysis — it reads the pre-computed sparkle and cell masks from Col 1 rather than re-running segmentation, keeping measurement and detection cleanly separated.
+**Col 2** performs mask-based FRET analysis — reads the pre-computed sparkle and cell masks from Col 1, quantifies FRET intensity per sparkle, computes sparkles/cell ratio, and exports results to Excel + CSV.
+
+**Col 3** performs multivariate characterization of sparkle morphology and FRET features: PCA, UMAP, correlation matrix, Random Forest classification, per-patient heatmap, and statistical tests — grouped by experimental condition from the Plate info file.
 
 ---
 
